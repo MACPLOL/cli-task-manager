@@ -34,6 +34,18 @@ def list_tasks():
     for index, task in enumerate(tasks, start=1):
         print(f"{index}. {task}")
 
+def search_tasks(search_text):
+    tasks = load_tasks()
+
+    found_match = False
+
+    for index, task in enumerate(tasks, start=1):
+        if search_text.lower() in task.lower():
+            print(f"{index}. {task}")
+            found_match = True
+
+    if not found_match:
+        print("no matching tasks found")
 
 def delete_task(task_number):
     tasks = load_tasks()
@@ -78,6 +90,14 @@ def main():
             return
         
         delete_task(task_number)
+
+    elif command == "search":
+        if len(sys.argv) < 3:
+            print("please provide a search text")
+            return
+        
+        search_text = sys.argv[2]
+        search_tasks(search_text)
 
 
     else:
