@@ -60,6 +60,20 @@ def delete_task(task_number):
 
     print(f"deleted task: {deleted_task}")
 
+
+def complete_task(task_number):
+    tasks = load_tasks()
+
+    if task_number < 1 or task_number > len(tasks):
+        print("task number not found")
+        return
+    
+    task_index = task_number - 1
+    tasks[task_index] = "[x] " + tasks[task_index]
+    save_tasks(tasks)
+
+    print(f"completed task: {tasks[task_index]}")
+
 def main():
     if len(sys.argv) < 2:
         print("please provide a command")
@@ -98,6 +112,20 @@ def main():
         
         search_text = sys.argv[2]
         search_tasks(search_text)
+
+
+    elif command == "complete":
+        if len(sys.argv) < 3:
+            print("please provide a task number to complete")
+            return
+    
+        try:
+            task_number = int(sys.argv[2])
+        except ValueError:
+            print("invalid task number")
+            return
+        
+        complete_task(task_number)
 
 
     else:
