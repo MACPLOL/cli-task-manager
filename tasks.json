@@ -1,1 +1,10 @@
-["review python", "study python", "apply to jobs", "Review Python"]
+[
+  {
+    "text": "Review Python",
+    "completed": false
+  },
+  {
+    "text": "Study dictionaries",
+    "completed": true
+  }
+]

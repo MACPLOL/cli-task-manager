@@ -1,3 +1,4 @@
+from asyncio import tasks
 import sys
 import json
 
@@ -6,7 +7,8 @@ TASKS_FILE = "tasks.json"
 
 def add_task(task_text):
     tasks = load_tasks()
-    tasks.append(task_text)
+    new_task = {"text": task_text, "completed": False}
+    tasks.append(new_task)
     save_tasks(tasks)
 
     print(f"task added: {task_text}")
@@ -26,13 +28,17 @@ def save_tasks(tasks):
 def list_tasks():
     tasks= load_tasks()
 
-    if len(tasks) == 0:
+    if not tasks:
         print("no tasks found")
         return
 
     print("tasks:")
     for index, task in enumerate(tasks, start=1):
-        print(f"{index}. {task}")
+        if task["completed"]:
+            status = "[x]"
+        else:
+            status = "[ ]"
+        print(f"{index}. {status} {task['text']}")
 
 def search_tasks(search_text):
     tasks = load_tasks()
@@ -40,8 +46,12 @@ def search_tasks(search_text):
     found_match = False
 
     for index, task in enumerate(tasks, start=1):
-        if search_text.lower() in task.lower():
-            print(f"{index}. {task}")
+        if search_text.lower() in task["text"].lower():
+            if task["completed"]:
+                status = "[x]"
+            else:
+                status = "[ ]"
+            print(f"{index}. {status} {task['text']}")
             found_match = True
 
     if not found_match:
@@ -58,7 +68,7 @@ def delete_task(task_number):
     deleted_task = tasks.pop(task_index)
     save_tasks(tasks)
 
-    print(f"deleted task: {deleted_task}")
+    print(f"deleted task: {deleted_task['text']}")
 
 
 def complete_task(task_number):
@@ -69,10 +79,10 @@ def complete_task(task_number):
         return
     
     task_index = task_number - 1
-    tasks[task_index] = "[x] " + tasks[task_index]
+    tasks[task_index]["completed"] = True
     save_tasks(tasks)
 
-    print(f"completed task: {tasks[task_index]}")
+    print(f"completed task: {tasks[task_index]['text']}")
 
 def main():
     if len(sys.argv) < 2:
