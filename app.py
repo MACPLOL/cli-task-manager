@@ -84,9 +84,23 @@ def complete_task(task_number):
 
     print(f"completed task: {tasks[task_index]['text']}")
 
+
+
+def show_help():
+    print("Task Manager Commands:")
+    print()
+    print("  add <task text>        Add a new task")
+    print("  list                   Show all tasks")
+    print("  search <text>          Search tasks by text")
+    print("  complete <task number> Mark a task as completed")
+    print("  delete <task number>   Delete a task")
+    print("  help                   Show this help message")
+
 def main():
     if len(sys.argv) < 2:
         print("please provide a command")
+        print()
+        show_help()
         return
     
     command = sys.argv[1]
@@ -137,9 +151,14 @@ def main():
         
         complete_task(task_number)
 
+    elif command == "help":
+        show_help()
+
 
     else:
         print("unknown command")
+        print()
+        show_help()
 
     
 main()
